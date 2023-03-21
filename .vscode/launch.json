@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [{
+        "name": "Debug Nest Framework",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/server",
+        "sourceMaps": true,
+        "args": ["${workspaceFolder}/server/src/main.ts"],
+        "runtimeExecutable": "nodemon",
+        "runtimeArgs": [
+            "--exec", "ts-node", 
+            "-r", "tsconfig-paths/register",
+        ],
+        "restart": true,
+        "envFile": "${workspaceFolder}/.env",
+        "console": "integratedTerminal",
+    },
+    {
+        "name": "Create React App Proxy Server",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/client",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["start"],
+        "env": {
+            "BROWSER": "none"
+        },
+        "console": "integratedTerminal"
+    }],
+    "compounds": [{
+        "name": "Debug NestJS and CRA Proxy Server",
+        "configurations": ["Debug Nest Framework", "Create React App Proxy Server"]
+    }]
+}

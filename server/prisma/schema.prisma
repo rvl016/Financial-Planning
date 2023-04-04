@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model EntityAccount {
+  id Int @default(autoincrement()) @id
+  name String
+  statement BankStatement @relation(fields: [statementId], references: [id])
+  statementId Int @unique
+}
+
+model BankStatement {
+  id Int @default(autoincrement()) @id
+  entityAccount EntityAccount?
+  items BankStatementLine[]
+}
+
+model BankStatementLine {
+  id Int @default(autoincrement()) @id
+  title String
+  description String?
+  statement BankStatement @relation(fields: [statementId], references: [id])
+  statementId Int
+  type BankStatementLineType @relation(fields: [typeId], references: [id])
+  typeId Int
+  tags BankStatementLineTag[]
+  amountCents BigInt
+}
+
+model BankStatementLineType {
+  id Int @default(autoincrement()) @id
+  name String @unique
+  sign Int @default(-1)
+  bankStatementLines BankStatementLine[]
+}
+
+model BankStatementLineTag {
+  id Int @default(autoincrement()) @id
+  name String @unique
+  bankStatementLines BankStatementLine[]
+}
